@@ -1,3 +1,11 @@
+name: Release and Publish
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+
 jobs:
   release:
     runs-on: ubuntu-latest
@@ -26,7 +34,7 @@ jobs:
 
       - name: Get latest version tag
         id: get_version
-        run: echo "::set-output name=version::$(git describe --tags)"
+        run: echo "version=$(git describe --tags)" >> $GITHUB_OUTPUT
 
   publish:
     needs: release
