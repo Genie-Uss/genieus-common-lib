@@ -1,74 +1,47 @@
-name: Release and Publish
-
-on:
-  push:
-    branches:
-      - main
-      - develop
-
 jobs:
   release:
-    runs-on: ubuntu-22.04
-
+    runs-on: ubuntu-latest
     outputs:
-      released_version: ${{ steps.semantic.outputs.next-release-version }}
-
-    permissions:
-      contents: write
-      packages: write
+      version: ${{ steps.get_version.outputs.version }}
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Set up JDK
-        uses: actions/setup-java@v4
+      - uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
           java-version: '17'
 
-      - name: Grant execute permission for Gradle
-        run: chmod +x ./gradlew
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: '18'
 
       - name: Install semantic-release
-        run: npm install --save-dev semantic-release @semantic-release/exec @semantic-release/github @semantic-release/commit-analyzer @semantic-release/release-notes-generator
+        run: npm install --save-dev semantic-release @semantic-release/commit-analyzer @semantic-release/release-notes-generator
 
-      - name: Run semantic-release
-        id: semantic
+      - name: Run semantic-release (tagging only)
+        run: npx semantic-release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          npx semantic-release
+
+      - name: Get latest version tag
+        id: get_version
+        run: echo "::set-output name=version::$(git describe --tags)"
 
   publish:
-    name: Publish to GitHub Packages
     needs: release
-    runs-on: ubuntu-22.04
-
-    permissions:
-      contents: write
-      packages: write
+    runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Set up JDK
-        uses: actions/setup-java@v4
+      - uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
           java-version: '17'
 
-      - name: Grant execute permission for Gradle
-        run: chmod +x ./gradlew
-
       - name: Publish to GitHub Packages
-        run: ./gradlew publish -Pversion=${{ needs.release.outputs.released_version }}
+        run: ./gradlew publish -Pversion=${{ needs.release.outputs.version }}
         env:
           COMMON_GITHUB_USER: ${{ secrets.COMMON_GITHUB_USER }}
           COMMON_GITHUB_TOKEN: ${{ secrets.COMMON_GITHUB_TOKEN }}
