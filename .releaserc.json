@@ -1,0 +1,19 @@
+{
+  "branches": [
+    "main",
+    {
+      "name": "develop",
+      "prerelease": "beta"
+    }
+  ],
+  "tagFormat": "${version}",
+  "plugins": [
+    "@semantic-release/commit-analyzer",
+    "@semantic-release/release-notes-generator",
+    "@semantic-release/github",
+    "@semantic-release/exec"
+  ],
+  "exec": {
+    "publishCmd": "./gradlew publish -Pversion=${nextRelease.version}"
+  }
+}
