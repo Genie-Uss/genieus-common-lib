@@ -6,7 +6,7 @@ plugins {
 }
 
 group = 'com.genieus'
-version = project.findProperty("version") ?: "0.0.0"
+version = project.hasProperty("version") ? project.property("version") : "0.0.0"
 
 java {
     toolchain {
