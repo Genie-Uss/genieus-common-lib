@@ -10,6 +10,9 @@ jobs:
   release:
     runs-on: ubuntu-22.04
 
+    outputs:
+      released_version: ${{ steps.semantic.outputs.next-release-version }}
+
     permissions:
       contents: write
       packages: write
@@ -36,8 +39,36 @@ jobs:
         run: npm install --save-dev semantic-release @semantic-release/exec @semantic-release/github @semantic-release/commit-analyzer @semantic-release/release-notes-generator
 
       - name: Run semantic-release
+        id: semantic
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          npx semantic-release
+
+  publish:
+    name: Publish to GitHub Packages
+    needs: release
+    runs-on: ubuntu-22.04
+
+    permissions:
+      contents: write
+      packages: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Grant execute permission for Gradle
+        run: chmod +x ./gradlew
+
+      - name: Publish to GitHub Packages
+        run: ./gradlew publish -Pversion=${{ needs.release.outputs.released_version }}
+        env:
           COMMON_GITHUB_USER: ${{ secrets.COMMON_GITHUB_USER }}
           COMMON_GITHUB_TOKEN: ${{ secrets.COMMON_GITHUB_TOKEN }}
-        run: npx semantic-release
