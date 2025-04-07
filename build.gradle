@@ -5,6 +5,7 @@ plugins {
     id 'maven-publish'
 }
 
+//테스트
 group = 'com.genieus'
 version = project.hasProperty("version") ? project.property("version") : "0.0.0"
 
