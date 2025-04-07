@@ -33,6 +33,7 @@ jobs:
 
       - name: Run semantic-release
         env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           COMMON_GITHUB_USER: ${{ secrets.COMMON_GITHUB_USER }}
           COMMON_GITHUB_TOKEN: ${{ secrets.COMMON_GITHUB_TOKEN }}
         run: npx semantic-release
