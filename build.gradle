@@ -1,0 +1,52 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.4.4'
+    id 'io.spring.dependency-management' version '1.1.7'
+    id 'maven-publish'
+}
+
+group = 'com.genieus'
+version = project.hasProperty("version") ? project.property("version") : "0.0.0"
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+publishing {
+    publications {
+        create("mavenJava", MavenPublication) {
+            from components.java
+
+            groupId = 'com.genieus'
+            artifactId = 'genieus-common-lib'
+
+        }
+    }
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/Genie-Uss/genieus-common-lib")
+
+            credentials {
+                username = project.findProperty("COMMON_GITHUB_USER") ?: System.getenv("COMMON_GITHUB_USER")
+                password = project.findProperty("COMMON_GITHUB_TOKEN") ?: System.getenv("COMMON_GITHUB_TOKEN")
+            }
+        }
+    }
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web:3.4.4'
+    compileOnly 'org.projectlombok:lombok:1.18.30'
+    annotationProcessor 'org.projectlombok:lombok:1.18.30'
+}
+
+tasks.named("bootJar") {
+    enabled = false
+}

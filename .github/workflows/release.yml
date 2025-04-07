@@ -1,0 +1,57 @@
+name: Release and Publish
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    outputs:
+      version: ${{ steps.get_version.outputs.version }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install semantic-release
+        run: npm install --save-dev semantic-release @semantic-release/commit-analyzer @semantic-release/release-notes-generator
+
+      - name: Run semantic-release (tagging only)
+        run: npx semantic-release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Get latest version tag
+        id: get_version
+        run: echo "version=$(git describe --tags)" >> $GITHUB_OUTPUT
+
+  publish:
+    needs: release
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Publish to GitHub Packages
+        run: ./gradlew publish -Pversion=${{ needs.release.outputs.version }}
+        env:
+          COMMON_GITHUB_USER: ${{ secrets.COMMON_GITHUB_USER }}
+          COMMON_GITHUB_TOKEN: ${{ secrets.COMMON_GITHUB_TOKEN }}
