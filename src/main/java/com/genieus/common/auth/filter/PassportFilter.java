@@ -1,10 +1,10 @@
-package com.genieus.common.passport.filter;
+package com.genieus.common.auth.filter;
 
-import static com.genieus.common.passport.constant.PassportConstant.ATTR_PASSPORT;
-import static com.genieus.common.passport.constant.PassportConstant.PASSPORT_HEADER;
+import static com.genieus.common.auth.constant.PassportConstant.ATTR_PASSPORT;
+import static com.genieus.common.auth.constant.PassportConstant.PASSPORT_HEADER;
 
-import com.genieus.common.passport.model.Passport;
-import com.genieus.common.passport.util.PassportUtils;
+import com.genieus.common.auth.model.Passport;
+import com.genieus.common.auth.util.PassportUtils;
 import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

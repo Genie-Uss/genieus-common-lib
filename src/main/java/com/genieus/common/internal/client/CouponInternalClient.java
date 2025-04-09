@@ -10,12 +10,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 public interface CouponInternalClient {
-    @GetMapping("/internal/v1/coupons/{couponId}")
-    CouponClientResponse findCoupon(@PathVariable("couponId") Long couponId);
+  @GetMapping("/internal/v1/coupons/{couponId}")
+  CouponClientResponse findCoupon(@PathVariable("couponId") Long couponId);
 
-    @GetMapping("/internal/v1/coupons")
-    List<CouponClientResponse> findCouponList(@RequestParam List<Long> couponIds);
+  @GetMapping("/internal/v1/coupons")
+  List<CouponClientResponse> findCouponList(@RequestParam List<Long> couponIds);
 
-    @PostMapping("/internal/v1/coupons/usage")
-    CouponClientResponse useCoupon(@RequestBody UseCouponRequest useCouponRequest);
+  @PostMapping("/internal/v1/coupons/usage")
+  CouponClientResponse useCoupon(@RequestBody UseCouponRequest useCouponRequest);
 }

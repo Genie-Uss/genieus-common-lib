@@ -1,6 +1,6 @@
 package com.genieus.common.config;
 
-import com.genieus.common.passport.PassportWebConfig;
+import com.genieus.common.auth.PassportWebConfig;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.context.annotation.Import;
 
