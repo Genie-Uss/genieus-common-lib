@@ -1,7 +1,7 @@
-package com.genieus.common.passport.util;
+package com.genieus.common.auth.util;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.genieus.common.passport.model.Passport;
+import com.genieus.common.auth.model.Passport;
 import java.util.Base64;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

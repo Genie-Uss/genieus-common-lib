@@ -7,9 +7,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 public interface UserInternalClient {
-    @GetMapping("/internal/v1/users/{userId}")
-    UserClientResponse findUser(@PathVariable("userId") Long userId);
+  @GetMapping("/internal/v1/users/{userId}")
+  UserClientResponse findUser(@PathVariable("userId") Long userId);
 
-    @GetMapping("/internal/v1/users")
-    List<UserClientResponse> findUserList(@RequestParam List<Long> userId);
+  @GetMapping("/internal/v1/users")
+  List<UserClientResponse> findUserList(@RequestParam List<Long> userId);
 }

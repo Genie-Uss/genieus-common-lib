@@ -1,11 +1,11 @@
-package com.genieus.common.passport;
+package com.genieus.common.auth;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.genieus.common.passport.filter.PassportFilter;
-import com.genieus.common.passport.resolver.PassportArgumentResolver;
-import com.genieus.common.passport.util.PassportUtils;
+import com.genieus.common.auth.filter.PassportFilter;
+import com.genieus.common.auth.resolver.PassportArgumentResolver;
+import com.genieus.common.auth.util.PassportUtils;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
@@ -20,7 +20,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class PassportWebConfig implements WebMvcConfigurer {
 
   @Bean
-  public FilterRegistrationBean<PassportFilter> passportFilterRegistration(PassportFilter passportFilter) {
+  public FilterRegistrationBean<PassportFilter> passportFilterRegistration(
+      PassportFilter passportFilter) {
     FilterRegistrationBean<PassportFilter> registrationBean = new FilterRegistrationBean<>();
     registrationBean.setFilter(passportFilter);
     registrationBean.addUrlPatterns("/*");
