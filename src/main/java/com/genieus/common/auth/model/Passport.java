@@ -1,4 +1,4 @@
-package com.genieus.common.passport.model;
+package com.genieus.common.auth.model;
 
 import java.io.Serializable;
 import lombok.AllArgsConstructor;

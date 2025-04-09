@@ -1,4 +1,4 @@
-package com.genieus.common.passport.constant;
+package com.genieus.common.auth.constant;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;

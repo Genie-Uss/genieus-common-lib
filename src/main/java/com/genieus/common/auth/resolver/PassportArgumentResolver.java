@@ -1,9 +1,9 @@
-package com.genieus.common.passport.resolver;
+package com.genieus.common.auth.resolver;
 
-import static com.genieus.common.passport.constant.PassportConstant.ATTR_PASSPORT;
+import static com.genieus.common.auth.constant.PassportConstant.ATTR_PASSPORT;
 
-import com.genieus.common.passport.annotation.WithPassport;
-import com.genieus.common.passport.model.Passport;
+import com.genieus.common.auth.annotation.WithPassport;
+import com.genieus.common.auth.model.Passport;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.MethodParameter;
@@ -19,8 +19,8 @@ public class PassportArgumentResolver implements HandlerMethodArgumentResolver {
 
   @Override
   public boolean supportsParameter(MethodParameter parameter) {
-    return parameter.hasParameterAnnotation(WithPassport.class) &&
-        parameter.getParameterType().equals(Passport.class);
+    return parameter.hasParameterAnnotation(WithPassport.class)
+        && parameter.getParameterType().equals(Passport.class);
   }
 
   @Override
