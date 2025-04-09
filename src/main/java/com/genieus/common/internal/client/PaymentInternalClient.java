@@ -10,12 +10,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 public interface PaymentInternalClient {
-    @GetMapping("/internal/v1/payments/{paymentId}")
-    PaymentClientResponse findPayment(@PathVariable("paymentId") Long paymentId);
+  @GetMapping("/internal/v1/payments/{paymentId}")
+  PaymentClientResponse findPayment(@PathVariable("paymentId") Long paymentId);
 
-    @GetMapping("/internal/v1/payments")
-    List<PaymentClientResponse> findPaymentList(@RequestParam List<Long> paymentIds);
+  @GetMapping("/internal/v1/payments")
+  List<PaymentClientResponse> findPaymentList(@RequestParam List<Long> paymentIds);
 
-    @PostMapping("/internal/v1/payments")
-    PaymentClientResponse createPayment(@RequestBody CreatePaymentRequest request);
+  @PostMapping("/internal/v1/payments")
+  PaymentClientResponse createPayment(@RequestBody CreatePaymentRequest request);
 }
