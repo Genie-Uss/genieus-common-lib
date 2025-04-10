@@ -33,7 +33,7 @@ public class RoleCheckAspect {
       throw new UnauthorizedException("인증 정보가 없습니다.");
     }
 
-    RoleType userRole = RoleType.valueOf(passport.getRole().name());
+    RoleType userRole = passport.getRole();
 
     HasRole hasRoleAnnotation = method.getAnnotation(HasRole.class);
     if (hasRoleAnnotation != null) {
