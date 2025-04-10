@@ -3,6 +3,7 @@ package com.genieus.common.auth;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.genieus.common.auth.aop.RoleCheckAspect;
 import com.genieus.common.auth.context.PassportContext;
 import com.genieus.common.auth.filter.PassportFilter;
 import com.genieus.common.auth.resolver.PassportArgumentResolver;
@@ -61,5 +62,10 @@ public class PassportWebConfig implements WebMvcConfigurer {
   @Bean
   public PassportContext passportContext() {
     return new PassportContext();
+  }
+
+  @Bean
+  public RoleCheckAspect roleCheckAspect() {
+    return new RoleCheckAspect();
   }
 }
