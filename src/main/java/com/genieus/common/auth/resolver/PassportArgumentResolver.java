@@ -1,10 +1,8 @@
 package com.genieus.common.auth.resolver;
 
-import static com.genieus.common.auth.constant.PassportConstant.ATTR_PASSPORT;
-
 import com.genieus.common.auth.annotation.WithPassport;
+import com.genieus.common.auth.context.PassportContext;
 import com.genieus.common.auth.model.Passport;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;
@@ -29,10 +27,6 @@ public class PassportArgumentResolver implements HandlerMethodArgumentResolver {
       ModelAndViewContainer mavContainer,
       NativeWebRequest webRequest,
       WebDataBinderFactory binderFactory) {
-    HttpServletRequest request = webRequest.getNativeRequest(HttpServletRequest.class);
-    if (request != null) {
-      return request.getAttribute(ATTR_PASSPORT);
-    }
-    return null;
+    return PassportContext.getPassport();
   }
 }
