@@ -14,7 +14,7 @@ public interface ProductInternalClient {
   ProductClientResponse findProduct(@PathVariable("productId") Long productId);
 
   @GetMapping("/internal/v1/products")
-  List<ProductClientResponse> findProductList(@RequestParam List<Long> productId);
+  List<ProductClientResponse> findProductList(@RequestParam("productId") List<Long> productIds);
 
   @PostMapping({"/internal/v1/products/stock"})
   List<ProductClientResponse> useStock(@RequestBody StockRequest request);

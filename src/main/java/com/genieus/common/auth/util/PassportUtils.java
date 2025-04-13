@@ -18,8 +18,7 @@ public class PassportUtils {
       return encoded;
     } catch (Exception e) {
       log.error("인코딩 오류: " + e.getMessage());
-      e.printStackTrace();
-      throw new RuntimeException("Passport Encoding 작업 중 오류", e);
+      throw new RuntimeException(e);
     }
   }
 
@@ -30,8 +29,7 @@ public class PassportUtils {
       return passport;
     } catch (Exception e) {
       log.error("디코딩 오류: " + e.getMessage());
-      e.printStackTrace();
-      throw new RuntimeException("Passport Decoding 작업 중 오류", e);
+      throw new RuntimeException(e);
     }
   }
 }
