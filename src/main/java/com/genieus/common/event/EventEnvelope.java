@@ -46,11 +46,14 @@ public class EventEnvelope<T extends DomainEvent> {
       JsonNode root = mapper.readTree(json);
       String eventType = root.get("eventType").asText();
       Class<? extends DomainEvent> clazz = typeResolver.apply(eventType);
+      if (clazz == null) {
+        return null;
+      }
       JavaType javaType =
           mapper.getTypeFactory().constructParametricType(EventEnvelope.class, clazz);
       return mapper.readValue(json, javaType);
     } catch (Exception e) {
-      throw new RuntimeException("EventEnvelope 역직렬화 실패", e);
+      throw new RuntimeException("[fromJson] EventEnvelope 역직렬화 실패", e);
     }
   }
 }

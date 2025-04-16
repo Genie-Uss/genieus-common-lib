@@ -4,7 +4,9 @@ import com.genieus.common.event.DomainEvent;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class EventTypeRegistry {
 
   private static final Map<String, Class<? extends DomainEvent>> registry =
@@ -15,11 +17,7 @@ public class EventTypeRegistry {
   }
 
   public static Class<? extends DomainEvent> resolve(String eventType) {
-    Class<? extends DomainEvent> clazz = registry.get(eventType);
-    if (clazz == null) {
-      throw new IllegalArgumentException("처리할 수 없는 eventType: " + eventType);
-    }
-    return clazz;
+    return registry.get(eventType);
   }
 
   public static Function<String, Class<? extends DomainEvent>> resolver() {

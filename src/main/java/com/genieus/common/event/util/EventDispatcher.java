@@ -20,7 +20,7 @@ public class EventDispatcher {
   public void dispatch(String eventType, DomainEvent event) {
     HandlerMethod handlerMethod = handlerMap.get(eventType);
     if (handlerMethod == null) {
-      throw new IllegalArgumentException("지원하지 않는 이벤트 타입입니다.: " + eventType);
+      return;
     }
     try {
       handlerMethod.method().invoke(handlerMethod.bean(), event);
