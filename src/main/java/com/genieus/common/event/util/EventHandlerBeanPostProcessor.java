@@ -1,5 +1,6 @@
 package com.genieus.common.event.util;
 
+import com.genieus.common.event.DomainEvent;
 import com.genieus.common.event.annotation.EventTypeMapping;
 import java.lang.reflect.Method;
 import lombok.NonNull;
@@ -21,6 +22,16 @@ public class EventHandlerBeanPostProcessor implements BeanPostProcessor, Applica
       if (method.isAnnotationPresent(EventTypeMapping.class)) {
         String eventType = method.getAnnotation(EventTypeMapping.class).value();
         context.getBean(EventDispatcher.class).register(eventType, bean, method);
+
+        Class<?>[] parameterTypes = method.getParameterTypes();
+        if (parameterTypes.length != 1 || !DomainEvent.class.isAssignableFrom(parameterTypes[0])) {
+          throw new IllegalArgumentException(
+              "@EventTypeMapping 메서드는 DomainEvent 하나만 받아야 합니다: " + method);
+        }
+
+        @SuppressWarnings("unchecked")
+        Class<? extends DomainEvent> eventClass = (Class<? extends DomainEvent>) parameterTypes[0];
+        EventTypeRegistry.register(eventType, eventClass);
       }
     }
     return bean;
