@@ -3,8 +3,8 @@ package com.genieus.common.event.util;
 import com.genieus.common.event.DomainEvent;
 import com.genieus.common.event.EventEnvelope;
 import java.lang.reflect.Method;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -19,7 +19,7 @@ import org.springframework.stereotype.Component;
 public class EventDispatcher {
 
   // 토픽 + 이벤트타입을 키로 사용하는 핸들러 맵
-  private final Map<EventHandlerKey, HandlerMethod> handlerMap = new HashMap<>();
+  private final Map<EventHandlerKey, HandlerMethod> handlerMap = new ConcurrentHashMap<>();
 
   /**
    * 특정 토픽 + 이벤트 타입에 대한 처리 메서드를 등록한다.
@@ -34,13 +34,7 @@ public class EventDispatcher {
       String topic, String eventType, Object bean, Method method, Method fallbackMethod) {
     handlerMap.put(
         new EventHandlerKey(topic, eventType), new HandlerMethod(bean, method, fallbackMethod));
-    log.info(
-        "이벤트 핸들러 등록됨 - topic: {}, eventType: {}, bean: {}, method:{}, fallbackMEthod: {}",
-        topic,
-        eventType,
-        bean,
-        method,
-        fallbackMethod);
+    log.info("이벤트 핸들러 등록됨 - topic: {}, eventType: {}, bean: {}", topic, eventType, bean);
   }
 
   /**
@@ -69,15 +63,12 @@ public class EventDispatcher {
   /**
    * 이벤트 처리 실패 시, 등록된 fallback 메서드를 찾아 실행한다.
    *
-   * @param topic     Kafka 수신 토픽
+   * @param topic Kafka 수신 토픽
    * @param eventType 이벤트 타입명
-   * @param envelope  원본 이벤트 봉투 (null 가능)
-   * @param ex        처리 중 발생한 예외
-   *
-   * 책임 범위:
-   * - 등록된 fallback 메서드가 있다면 해당 메서드 실행
-   * - fallback 메서드가 없다면 무시
-   * - fallback 메서드 실행 중 오류 발생 시 log.error만 출력하고 전파하지 않음
+   * @param envelope 원본 이벤트 봉투 (null 가능)
+   * @param ex 처리 중 발생한 예외
+   *     <p>책임 범위: - 등록된 fallback 메서드가 있다면 해당 메서드 실행 - fallback 메서드가 없다면 무시 - fallback 메서드 실행 중 오류
+   *     발생 시 log.error만 출력하고 전파하지 않음
    */
   public void fallback(
       String topic, String eventType, EventEnvelope<? extends DomainEvent> envelope, Exception ex) {
@@ -89,7 +80,8 @@ public class EventDispatcher {
     try {
       handler.fallbackMethod().invoke(handler.bean(), envelope, ex);
     } catch (Exception e) {
-      log.error("[fallback] fallback 실행 중 오류 발생 - key={}", key, e);
+      log.error("[fallback] fallback 실행 중 오류 발생 - topic={}, eventType={}, key={}",
+          topic, eventType, key, e);
     }
   }
 

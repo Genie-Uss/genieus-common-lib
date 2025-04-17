@@ -34,11 +34,7 @@ public class EventRouter {
     try {
       dispatcher.dispatch(topic, envelope.getEventType(), envelope.getEvent());
     } catch (Exception dispatchEx) {
-      log.error(
-          "[route] 이벤트 처리 중 예외 발생 - topic={}, eventType={}",
-          topic,
-          envelope.getEventType(),
-          dispatchEx);
+      log.error("[route] 이벤트 처리 중 예외 발생 - topic: {}, envelope: {}, error: {} ", topic, envelope, dispatchEx.getMessage());
       dispatcher.fallback(topic, envelope.getEventType(), envelope, dispatchEx);
     }
   }
@@ -47,16 +43,25 @@ public class EventRouter {
     try {
       return parser.resolveEventType(json);
     } catch (Exception e) {
-      log.warn("[resolveEventType] 이벤트 타입 추출 실패 - topic={}, json={}", topic, json, e);
+      log.warn(
+          "[resolveEventType] 이벤트 타입 추출 실패 - topic={}, json={}, error: {}",
+          topic,
+          json,
+          e.getMessage());
       return null;
     }
   }
 
-  private EventEnvelope<? extends DomainEvent> deserializeEnvelope(String json, Class<? extends DomainEvent> clazz) {
+  private EventEnvelope<? extends DomainEvent> deserializeEnvelope(
+      String json, Class<? extends DomainEvent> clazz) {
     try {
       return parser.deserialize(json, clazz);
     } catch (Exception e) {
-      log.warn("[deserializeEnvelope] 이벤트 역직렬화 실패 - 원본 ={}, 예상 ={}", json, clazz, e);
+      log.warn(
+          "[deserializeEnvelope] 이벤트 역직렬화 실패 - json ={}, clazz ={}, error: {}",
+          json,
+          clazz,
+          e.getMessage());
       return null;
     }
   }

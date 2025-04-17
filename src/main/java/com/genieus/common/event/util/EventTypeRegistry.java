@@ -1,6 +1,7 @@
 package com.genieus.common.event.util;
 
 import com.genieus.common.event.DomainEvent;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import lombok.extern.slf4j.Slf4j;
@@ -27,7 +28,12 @@ public class EventTypeRegistry {
    * @param clazz     이벤트 클래스 타입 (DomainEvent 하위 클래스)
    */
   public static void register(String eventType, Class<? extends DomainEvent> clazz) {
-    registry.put(eventType, clazz);
+    Class<? extends DomainEvent> existing = registry.put(eventType, clazz);
+    if (existing != null && !existing.equals(clazz)) {
+      log.warn("이벤트 타입 '{}' 매핑을 {}에서 {}로 덮어씁니다", eventType, existing.getName(), clazz.getName());
+    } else if (existing == null) {
+      log.debug("이벤트 타입 '{}' 매핑을 {}로 등록합니다", eventType, clazz.getName());
+    }
   }
 
   /**
@@ -40,4 +46,13 @@ public class EventTypeRegistry {
     return registry.get(eventType);
   }
 
+  /**
+   * 현재 등록된 모든 이벤트 타입과 매핑된 클래스를 반환한다.
+   * 디버깅 및 모니터링 용도로 사용할 수 있다.
+   *
+   * @return 이벤트 타입과 클래스의 매핑 복사본
+   */
+  public static Map<String, Class<? extends DomainEvent>> getAllRegisteredTypes() {
+    return new HashMap<>(registry);
+  }
 }

@@ -6,11 +6,13 @@ import com.genieus.common.event.annotation.FallbackMapping;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import lombok.NonNull;
+import org.springframework.aop.support.AopUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
+import org.springframework.util.ReflectionUtils;
 
 /**
  * 모든 스프링 빈을 후처리하면서, @EventTypeMapping 애노테이션이 붙은 메서드를 탐색해 Dispatcher 및 Registry에 등록한다. - Dispatcher:
@@ -26,8 +28,9 @@ public class EventHandlerBeanPostProcessor implements BeanPostProcessor, Applica
   public Object postProcessAfterInitialization(Object bean, @NonNull String beanName)
       throws BeansException {
     // 1. 모든 메서드를 리플렉션으로 검사
-    for (Method method : bean.getClass().getDeclaredMethods()) {
-
+    Class<?> targetClass =
+        AopUtils.getTargetClass(bean); // org.springframework.aop.framework.AopUtils
+    for (Method method : ReflectionUtils.getUniqueDeclaredMethods(targetClass)) { // spring-core
       // 2. @EventTypeMapping 애노테이션이 붙은 메서드만 필터링
       if (method.isAnnotationPresent(EventTypeMapping.class)) {
         // 3. 이벤트 핸들러 메서드 파라미터 유효성 검사
