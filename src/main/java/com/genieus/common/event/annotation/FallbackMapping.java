@@ -9,10 +9,10 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface EventTypeMapping {
+public @interface FallbackMapping {
   /** Kafka 토픽 이름 (예: "order-events") */
   String topic();
 
   /** 이벤트 타입 (예: "OrderCreated") */
-  String eventType() default "";
+  String eventType();
 }
