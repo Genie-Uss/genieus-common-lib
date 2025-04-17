@@ -56,7 +56,7 @@ public class EventDispatcher {
       handlerMethod.method().invoke(handlerMethod.bean(), event);
     } catch (Exception e) {
       // 예외는 route() 단에서 잡히고 fallback 호출로 이어짐
-      throw new RuntimeException(e);
+      throw new RuntimeException(e.getMessage(), e);
     }
   }
 
