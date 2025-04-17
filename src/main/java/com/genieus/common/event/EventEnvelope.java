@@ -25,7 +25,7 @@ public class EventEnvelope<T extends DomainEvent> {
         event,
         UUID.randomUUID(),
         LocalDateTime.now(),
-        event.getClass().getTypeName(),
+        event.getClass().getSimpleName(),
         ApplicationNameProvider.getName());
   }
 
@@ -33,4 +33,5 @@ public class EventEnvelope<T extends DomainEvent> {
       T event, String uuid, LocalDateTime createdAt, String eventType, String source) {
     return new EventEnvelope<>(event, UUID.fromString(uuid), createdAt, eventType, source);
   }
+
 }
