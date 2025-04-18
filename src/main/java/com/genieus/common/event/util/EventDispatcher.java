@@ -56,8 +56,8 @@ public class EventDispatcher {
       handlerMethod.method().invoke(handlerMethod.bean(), event);
     } catch (Exception e) {
       // 예외는 route() 단에서 잡히고 fallback 호출로 이어짐
-      throw new RuntimeException("이벤트 로직 처리에 실패하였습니다.", e);
-    }
+      throw new RuntimeException(e.getCause());
+    } 
   }
 
   /**
@@ -71,7 +71,7 @@ public class EventDispatcher {
    *     발생 시 log.error만 출력하고 전파하지 않음
    */
   public void fallback(
-      String topic, String eventType, EventEnvelope<? extends DomainEvent> envelope, Exception ex) {
+      String topic, String eventType, EventEnvelope<? extends DomainEvent> envelope, Throwable ex) {
     EventHandlerKey key = new EventHandlerKey(topic, eventType);
     HandlerMethod handler = handlerMap.get(key);
     if (handler == null || handler.fallbackMethod() == null) {

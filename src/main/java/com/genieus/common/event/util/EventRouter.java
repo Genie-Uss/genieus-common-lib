@@ -34,8 +34,8 @@ public class EventRouter {
     try {
       dispatcher.dispatch(topic, envelope.getEventType(), envelope.getEvent());
     } catch (Exception dispatchEx) {
-      log.error("[route] 이벤트 처리 중 예외 발생 - topic: {}, envelope: {}, error: {} ", topic, envelope, dispatchEx.getMessage());
-      dispatcher.fallback(topic, envelope.getEventType(), envelope, dispatchEx);
+      log.error("[route] 서비스에서 이벤트 처리 중 예외 발생 - topic: {}, envelope: {}, error: {} ", topic, envelope, dispatchEx.getMessage());
+      dispatcher.fallback(topic, envelope.getEventType(), envelope, dispatchEx.getCause());
     }
   }
 
