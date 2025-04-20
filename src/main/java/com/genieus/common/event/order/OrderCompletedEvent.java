@@ -6,9 +6,9 @@ import java.util.List;
 
 public record OrderCompletedEvent(
     Long orderId,
-    Long userid,
+    Long userId,
     Long couponId,
     List<OrderProductItem> orderProductItems,
-    LocalDateTime canceledAt)
+    LocalDateTime completedAt)
     implements DomainEvent {
 }
