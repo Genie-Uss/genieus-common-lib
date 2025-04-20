@@ -11,5 +11,4 @@ public record OrderCanceledEvent(
     List<OrderProductItem> orderProductItems,
     LocalDateTime canceledAt)
     implements DomainEvent {
-  public record OrderProductItem(Long productId, Integer quantity) {}
 }
