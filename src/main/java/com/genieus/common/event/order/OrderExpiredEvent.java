@@ -4,11 +4,9 @@ import com.genieus.common.event.DomainEvent;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public record OrderCompletedEvent(
+public record OrderExpiredEvent(
     Long orderId,
     Long userid,
-    Long couponId,
     List<OrderProductItem> orderProductItems,
-    LocalDateTime canceledAt)
-    implements DomainEvent {
-}
+    LocalDateTime expiredAt)
+    implements DomainEvent {}
