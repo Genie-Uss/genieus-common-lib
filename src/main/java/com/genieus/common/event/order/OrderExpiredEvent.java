@@ -6,7 +6,7 @@ import java.util.List;
 
 public record OrderExpiredEvent(
     Long orderId,
-    Long userid,
+    Long userId,
     List<OrderProductItem> orderProductItems,
     LocalDateTime expiredAt)
     implements DomainEvent {}
