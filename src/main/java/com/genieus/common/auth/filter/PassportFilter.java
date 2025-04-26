@@ -34,7 +34,9 @@ public class PassportFilter implements Filter {
     String encodedPassport = httpRequest.getHeader(PASSPORT_HEADER);
 
     try {
+      if (encodedPassport != null) {
         try {
+
           Passport passport = passportUtils.decode(encodedPassport);
           request.setAttribute(ATTR_PASSPORT, passport);
 
@@ -42,7 +44,9 @@ public class PassportFilter implements Filter {
         } catch (Exception e) {
           log.error("PassPort Decoding 작업 중 오류: {}", e.getMessage(), e);
         }
+      }
       chain.doFilter(request, response);
+
     } finally {
       PassportContext.clear();
     }
