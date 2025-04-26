@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class LoggingConfig {
     @Bean
-    public LogExecutionAspect logExecutionAspect() {
-        return new LogExecutionAspect();
+    public EntryExitLoggingAspect entryExitLoggingAspect() {
+        return new EntryExitLoggingAspect();
     }
 }
