@@ -30,7 +30,8 @@ public class EntryExitLoggingAspect {
   public void scheduledPointcut() {}
 
   // 위 네 지점 중 하나라도 걸리면 적용
-  @Pointcut("controllerPointcut() || eventTypeMappingPointcut() || txEventListenerPointcut() || scheduledPointcut()")
+  @Pointcut(
+      "controllerPointcut() || eventTypeMappingPointcut() || txEventListenerPointcut() || scheduledPointcut()")
   public void entryPoints() {}
 
   @Around("entryPoints()")
@@ -40,14 +41,12 @@ public class EntryExitLoggingAspect {
     long start = System.currentTimeMillis();
 
     log.info("[ENTRY] {} → args={}", signature, Arrays.toString(args));
-    try {
-      Object result = pjp.proceed();
-      long duration = System.currentTimeMillis() - start;
-      log.info("[EXIT]  {} → result={}, time={}ms", signature, result, duration);
-      return result;
-    } catch (Throwable tx) {
-      log.error("[ERROR] {} → {}", signature, tx.getMessage(), tx);
-      throw tx;
-    }
+
+    // 예외가 나면 이 줄에서 곧바로 호출자(글로벌핸들러 등)로 전파됩니다.
+    Object result = pjp.proceed();
+
+    long duration = System.currentTimeMillis() - start;
+    log.debug("[EXIT]  {} → result={}, time={}ms", signature, result, duration);
+    return result;
   }
 }
