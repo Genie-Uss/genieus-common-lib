@@ -53,7 +53,7 @@ public class EventEnvelopeParser {
       // JSON → EventEnvelope<T> 로 역직렬화 수행
       return mapper.readValue(json, javaType);
     } catch (Exception e) {
-      log.error("[deserialize] 역직렬화 실패 : json: {}, clazz: {}", json, clazz);
+      log.warn("[deserialize] 역직렬화 실패 : json: {}, clazz: {}", json, clazz);
       throw new RuntimeException("역직렬화 실패", e);
     }
   }

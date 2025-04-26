@@ -80,7 +80,7 @@ public class EventDispatcher {
     try {
       handler.fallbackMethod().invoke(handler.bean(), envelope, ex);
     } catch (Exception e) {
-      log.error("[fallback] fallback 실행 중 오류 발생 - topic={}, eventType={}, key={}",
+      log.warn("[fallback] fallback 실행 중 오류 발생 - topic={}, eventType={}, key={}",
           topic, eventType, key, e);
     }
   }
